@@ -1,5 +1,4 @@
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -10,80 +9,64 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.util.List;
 
 public class Bot extends TelegramLongPollingBot {
-    public InlineKeyboardButton sendForStartTest = InlineKeyboardButton.builder()
+    //Кнопка и клавиатура для запуска самого теста
+    private InlineKeyboardButton sendForStartTest = InlineKeyboardButton.builder()
             .text("Нажмите для начала теста!")
             .callbackData("start test")
             .build();
-
-    public InlineKeyboardMarkup keyboardForSendStartTest = InlineKeyboardMarkup.builder()
+    private InlineKeyboardMarkup keyboardForSendForStartTest = InlineKeyboardMarkup.builder()
             .keyboardRow(List.of(sendForStartTest))
             .build();
 
-    //Кнопки для ответа на 1 вопрос
-    public InlineKeyboardButton dateCreateJava1 = InlineKeyboardButton.builder()
-            .text("1994")
-            .callbackData("1994")
+    //кнопки и клавиатура для ответов на 1-й вопрос
+    private InlineKeyboardButton dateCreateJava1 = InlineKeyboardButton.builder()
+            .text("1990")
+            .callbackData("1990")
             .build();
 
-    public InlineKeyboardButton dateCreateJava2 = InlineKeyboardButton.builder()
+    private InlineKeyboardButton dateCreateJava2 = InlineKeyboardButton.builder()
             .text("1995")
             .callbackData("1995")
             .build();
-
-    public InlineKeyboardButton dateCreateJava3 = InlineKeyboardButton.builder()
+    private InlineKeyboardButton dateCreateJava3 = InlineKeyboardButton.builder()
             .text("2000")
             .callbackData("2000")
             .build();
-
-    public InlineKeyboardButton dateCreateJava4 = InlineKeyboardButton.builder()
+    private InlineKeyboardButton dateCreateJava4 = InlineKeyboardButton.builder()
             .text("2005")
             .callbackData("2005")
             .build();
-
-    public InlineKeyboardMarkup keyboardResponseForFirstQuestion = InlineKeyboardMarkup.builder()
+    private InlineKeyboardMarkup keyboardResponseForFirstQuestion = InlineKeyboardMarkup.builder()
             .keyboardRow(List.of(dateCreateJava1))
             .keyboardRow(List.of(dateCreateJava2))
             .keyboardRow(List.of(dateCreateJava3))
             .keyboardRow(List.of(dateCreateJava4))
             .build();
 
-    //Кнопки для ответа на 2 вопрос
-    public InlineKeyboardButton nothing = InlineKeyboardButton.builder()
+    //кнопки и клавиатура для ответов на 2-й вопрос
+    private InlineKeyboardButton nothing = InlineKeyboardButton.builder()
             .text("Ничем")
             .callbackData("ничем")
             .build();
 
-    public InlineKeyboardButton objectBigClassSmallLetter = InlineKeyboardButton.builder()
+    private InlineKeyboardButton objectBigLetter = InlineKeyboardButton.builder()
             .text("Объекты пишутся с большой буквы, а классы нет")
-            .callbackData("объекты большой, а классы нет")
+            .callbackData("о с большой, к с маленькой")
             .build();
-
-    public InlineKeyboardButton classPatternObjectCopy = InlineKeyboardButton.builder()
+    private InlineKeyboardButton classPatternObjectsCopy = InlineKeyboardButton.builder()
             .text("Классы являются шаблонами для создания объектов")
-            .callbackData("класс - шаблон, объект - экземпляр")
+            .callbackData("к - шаблон, о - экземпляр")
             .build();
-
-    public InlineKeyboardButton responseFalse = InlineKeyboardButton.builder()
-            .text("Варианты ответов неверные")
-            .callbackData("неверные ответы")
+    private InlineKeyboardButton responseFalse = InlineKeyboardButton.builder()
+            .text("Нет правильного ответа")
+            .callbackData("неверные ответа")
             .build();
-
-    public InlineKeyboardMarkup keyboardResponseForSecondQuestion = InlineKeyboardMarkup.builder()
+    private InlineKeyboardMarkup keyboardResponseForSecondQuestion = InlineKeyboardMarkup.builder()
             .keyboardRow(List.of(nothing))
-            .keyboardRow(List.of(objectBigClassSmallLetter))
-            .keyboardRow(List.of(classPatternObjectCopy))
+            .keyboardRow(List.of(objectBigLetter))
+            .keyboardRow(List.of(classPatternObjectsCopy))
             .keyboardRow(List.of(responseFalse))
             .build();
-
-    @Override
-    public String getBotUsername() {
-        return "@ogar_unique_tg_bot";
-    }
-
-    @Override
-    public String getBotToken() {
-        return "7598482212:AAFTyNhjaXL9XNvcx6hkmW5SpSQUgd2afLI";
-    }
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -93,47 +76,45 @@ public class Bot extends TelegramLongPollingBot {
 
     public void sendMenu(String messageText, Update update) {
         if (messageText.equals("/start_test")) {
-            Long who = update.getMessage().getFrom().getId();
+            Long senderId = update.getMessage().getFrom().getId();
             String txt = "Используйте кнопку ниже, чтобы начать тест!";
-            InlineKeyboardMarkup keyboard = keyboardForSendStartTest;
+            InlineKeyboardMarkup keyboard = keyboardForSendForStartTest;
 
             SendMessage sendMessage = SendMessage.builder()
-                    .chatId(who.toString())
+                    .chatId(senderId.toString())
                     .text(txt)
                     .replyMarkup(keyboard)
                     .build();
 
             try {
                 execute(sendMessage);
-            } catch (Exception ex) {
-                ex.getMessage();
+            } catch (Exception exception) {
+                exception.getMessage();
             }
         }
     }
 
     public void buttonTab(Update update) {
         if (update.hasCallbackQuery()) {
-            String chatId = update.getCallbackQuery().getMessage().getChatId().toString();
-            int idMessage = update.getCallbackQuery().getMessage().getMessageId();
             String dataCallback = update.getCallbackQuery().getData();
-//            String queryId = update.getCallbackQuery().getId();
+            String chatId = update.getCallbackQuery().getMessage().getChatId().toString();
+            Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
 
             EditMessageText editMessageText = EditMessageText.builder()
                     .chatId(chatId)
-                    .messageId(idMessage)
+                    .messageId(messageId)
                     .text("")
                     .build();
 
             EditMessageReplyMarkup editMessageReplyMarkup = EditMessageReplyMarkup.builder()
-                    .chatId(chatId.toString())
-                    .messageId(idMessage)
+                    .chatId(chatId)
+                    .messageId(messageId)
                     .build();
-
 
             if (dataCallback.equals("start test")) {
                 editMessageText.setText("Когда основали ЯП Java?");
                 editMessageReplyMarkup.setReplyMarkup(keyboardResponseForFirstQuestion);
-            } else if (dataCallback.equals("1994")) {
+            } else if (dataCallback.equals("1990")) {
                 editMessageText.setText("Чем объекты отличаются от классов?");
                 editMessageReplyMarkup.setReplyMarkup(keyboardResponseForSecondQuestion);
             } else if (dataCallback.equals("1995")) {
@@ -147,17 +128,25 @@ public class Bot extends TelegramLongPollingBot {
                 editMessageReplyMarkup.setReplyMarkup(keyboardResponseForSecondQuestion);
             }
 
-//            AnswerCallbackQuery answerCallbackQuery = AnswerCallbackQuery.builder()
-//                    .callbackQueryId(queryId)
-//                    .build();
-
             try {
-//                execute(answerCallbackQuery);
                 execute(editMessageText);
                 execute(editMessageReplyMarkup);
-            } catch (Exception ex) {
-                ex.getMessage();
+            } catch (Exception exception) {
+                exception.getMessage();
             }
         }
     }
+
+    @Override
+    public String getBotUsername() {
+        return "@ogar_control_test_tg_bot";
+    }
+
+
+    @Override
+    public String getBotToken() {
+        return "7577162083:AAHzqfhalHhS1YPy-AKuBYcJwSqkVdOhVN4";
+    }
+
+
 }
