@@ -23,7 +23,6 @@ public class Bot extends TelegramLongPollingBot {
             .text("1990")
             .callbackData("1990")
             .build();
-
     private InlineKeyboardButton dateCreateJava2 = InlineKeyboardButton.builder()
             .text("1995")
             .callbackData("1995")
@@ -48,7 +47,6 @@ public class Bot extends TelegramLongPollingBot {
             .text("Ничем")
             .callbackData("ничем")
             .build();
-
     private InlineKeyboardButton objectBigLetter = InlineKeyboardButton.builder()
             .text("Объекты пишутся с большой буквы, а классы нет")
             .callbackData("о с большой, к с маленькой")
@@ -59,13 +57,37 @@ public class Bot extends TelegramLongPollingBot {
             .build();
     private InlineKeyboardButton responseFalse = InlineKeyboardButton.builder()
             .text("Нет правильного ответа")
-            .callbackData("неверные ответа")
+            .callbackData("неверные ответы")
             .build();
     private InlineKeyboardMarkup keyboardResponseForSecondQuestion = InlineKeyboardMarkup.builder()
             .keyboardRow(List.of(nothing))
             .keyboardRow(List.of(objectBigLetter))
             .keyboardRow(List.of(classPatternObjectsCopy))
             .keyboardRow(List.of(responseFalse))
+            .build();
+
+    //кнопки и клавиатура для ответов на 3-й вопрос
+    private InlineKeyboardButton modifierAccessAndAllInOnePlace = InlineKeyboardButton.builder()
+            .text("В том модификаторах доступа и сокрытии логики в одном месте")
+            .callbackData("модификаторы, всё в одном месте")
+            .build();
+    private InlineKeyboardButton usingObjects = InlineKeyboardButton.builder()
+            .text("В использовании объектов")
+            .callbackData("использование объектов")
+            .build();
+    private InlineKeyboardButton noSemantics = InlineKeyboardButton.builder()
+            .text("Инкапсуляция - это придуманный термин, чтобы запутать")
+            .callbackData("нет смысла")
+            .build();
+    private InlineKeyboardButton usingInHTML = InlineKeyboardButton.builder()
+            .text("Этот термин используется в HTML")
+            .callbackData("использование в html")
+            .build();
+    private InlineKeyboardMarkup keyboardResponseForThirdQuestion = InlineKeyboardMarkup.builder()
+            .keyboardRow(List.of(modifierAccessAndAllInOnePlace))
+            .keyboardRow(List.of(usingObjects))
+            .keyboardRow(List.of(noSemantics))
+            .keyboardRow(List.of(usingInHTML))
             .build();
 
     @Override
@@ -111,10 +133,14 @@ public class Bot extends TelegramLongPollingBot {
                     .messageId(messageId)
                     .build();
 
+            //обработки кнопки для запуска самого теста
             if (dataCallback.equals("start test")) {
                 editMessageText.setText("Когда основали ЯП Java?");
                 editMessageReplyMarkup.setReplyMarkup(keyboardResponseForFirstQuestion);
-            } else if (dataCallback.equals("1990")) {
+            }
+
+            //обработка ответов на 1-й вопрос
+            else if (dataCallback.equals("1990")) {
                 editMessageText.setText("Чем объекты отличаются от классов?");
                 editMessageReplyMarkup.setReplyMarkup(keyboardResponseForSecondQuestion);
             } else if (dataCallback.equals("1995")) {
@@ -126,6 +152,36 @@ public class Bot extends TelegramLongPollingBot {
             } else if (dataCallback.equals("2005")) {
                 editMessageText.setText("Чем объекты отличаются от классов?");
                 editMessageReplyMarkup.setReplyMarkup(keyboardResponseForSecondQuestion);
+            }
+
+            //обработка ответов на 2-й вопрос
+            else if (dataCallback.equals("ничем")) {
+                editMessageText.setText("В чём проявляется сущность инкапсуляции?");
+                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
+            } else if (dataCallback.equals("о с большой, к с маленькой")) {
+                editMessageText.setText("В чём проявляется сущность инкапсуляции?");
+                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
+            } else if (dataCallback.equals("к - шаблон, о - экземпляр")) {
+                editMessageText.setText("В чём проявляется сущность инкапсуляции?");
+                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
+            } else if (dataCallback.equals("неверные ответы")) {
+                editMessageText.setText("В чём проявляется сущность инкапсуляции?");
+                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
+            }
+
+            //обработка ответов на 3-й вопрос
+            else if (dataCallback.equals("модификаторы, всё в одном месте")) {
+                editMessageText.setText("Зачем нужна иммутабельность в коде?");
+//                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
+            } else if (dataCallback.equals("использование объектов")) {
+                editMessageText.setText("Зачем нужна иммутабельность в коде?");
+//                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
+            } else if (dataCallback.equals("нет смысла")) {
+                editMessageText.setText("Зачем нужна иммутабельность в коде?");
+//                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
+            } else if (dataCallback.equals("использование в html")) {
+                editMessageText.setText("Зачем нужна иммутабельность в коде?");
+//                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
             }
 
             try {
