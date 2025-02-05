@@ -90,6 +90,31 @@ public class Bot extends TelegramLongPollingBot {
             .keyboardRow(List.of(usingInHTML))
             .build();
 
+    //кнопки и клавиатура для ответов на 4-й вопрос
+    private InlineKeyboardButton noUsingImmutable = InlineKeyboardButton.builder()
+            .text("Не нужна")
+            .callbackData("не нужна")
+            .build();
+    private InlineKeyboardButton difficultCode = InlineKeyboardButton.builder()
+            .text("Для усложнения кода")
+            .callbackData("сложность кода")
+            .build();
+    private InlineKeyboardButton fastWorkCode = InlineKeyboardButton.builder()
+            .text("Для быстрой работы кода")
+            .callbackData("быстрая работа кода")
+            .build();
+    private InlineKeyboardButton defineConstant = InlineKeyboardButton.builder()
+            .text("Определения константы - неизменяемых значений")
+            .callbackData("определение константы")
+            .build();
+    private InlineKeyboardMarkup keyboardResponseForFourQuestion = InlineKeyboardMarkup.builder()
+            .keyboardRow(List.of(noUsingImmutable))
+            .keyboardRow(List.of(difficultCode))
+            .keyboardRow(List.of(fastWorkCode))
+            .keyboardRow(List.of(defineConstant))
+            .build();
+
+
     @Override
     public void onUpdateReceived(Update update) {
         buttonTab(update);
@@ -172,16 +197,16 @@ public class Bot extends TelegramLongPollingBot {
             //обработка ответов на 3-й вопрос
             else if (dataCallback.equals("модификаторы, всё в одном месте")) {
                 editMessageText.setText("Зачем нужна иммутабельность в коде?");
-//                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
+                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForFourQuestion);
             } else if (dataCallback.equals("использование объектов")) {
                 editMessageText.setText("Зачем нужна иммутабельность в коде?");
-//                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
+                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForFourQuestion);
             } else if (dataCallback.equals("нет смысла")) {
                 editMessageText.setText("Зачем нужна иммутабельность в коде?");
-//                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
+                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForFourQuestion);
             } else if (dataCallback.equals("использование в html")) {
                 editMessageText.setText("Зачем нужна иммутабельность в коде?");
-//                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
+                editMessageReplyMarkup.setReplyMarkup(keyboardResponseForFourQuestion);
             }
 
             try {
