@@ -114,6 +114,9 @@ public class Bot extends TelegramLongPollingBot {
             .keyboardRow(List.of(defineConstant))
             .build();
 
+    //Счётчик для правильных ответов
+    private int countTrueAnswers = 0;
+
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -169,6 +172,7 @@ public class Bot extends TelegramLongPollingBot {
                 editMessageText.setText("Чем объекты отличаются от классов?");
                 editMessageReplyMarkup.setReplyMarkup(keyboardResponseForSecondQuestion);
             } else if (dataCallback.equals("1995")) {
+                countTrueAnswers += 1;
                 editMessageText.setText("Чем объекты отличаются от классов?");
                 editMessageReplyMarkup.setReplyMarkup(keyboardResponseForSecondQuestion);
             } else if (dataCallback.equals("2000")) {
@@ -187,6 +191,7 @@ public class Bot extends TelegramLongPollingBot {
                 editMessageText.setText("В чём проявляется сущность инкапсуляции?");
                 editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
             } else if (dataCallback.equals("к - шаблон, о - экземпляр")) {
+                countTrueAnswers += 1;
                 editMessageText.setText("В чём проявляется сущность инкапсуляции?");
                 editMessageReplyMarkup.setReplyMarkup(keyboardResponseForThirdQuestion);
             } else if (dataCallback.equals("неверные ответы")) {
@@ -196,6 +201,7 @@ public class Bot extends TelegramLongPollingBot {
 
             //обработка ответов на 3-й вопрос
             else if (dataCallback.equals("модификаторы, всё в одном месте")) {
+                countTrueAnswers += 1;
                 editMessageText.setText("Зачем нужна иммутабельность в коде?");
                 editMessageReplyMarkup.setReplyMarkup(keyboardResponseForFourQuestion);
             } else if (dataCallback.equals("использование объектов")) {
@@ -207,6 +213,30 @@ public class Bot extends TelegramLongPollingBot {
             } else if (dataCallback.equals("использование в html")) {
                 editMessageText.setText("Зачем нужна иммутабельность в коде?");
                 editMessageReplyMarkup.setReplyMarkup(keyboardResponseForFourQuestion);
+            }
+
+            //обработка ответов на 4-й вопрос
+            else if (dataCallback.equals("не нужна")) {
+                editMessageText.setText(
+                        "Тест успешно завершён и Вы ответили верно на " +
+                                countTrueAnswers +
+                                " вопросов[а]!");
+            } else if (dataCallback.equals("сложность кода")) {
+                editMessageText.setText(
+                        "Тест успешно завершён и Вы ответили верно на " +
+                                countTrueAnswers +
+                                " вопросов[а]!");
+            } else if (dataCallback.equals("быстрая работа кода")) {
+                editMessageText.setText(
+                        "Тест успешно завершён и Вы ответили верно на " +
+                                countTrueAnswers +
+                                " вопросов[а]!");
+            } else if (dataCallback.equals("определение константы")) {
+                countTrueAnswers += 1;
+                editMessageText.setText(
+                        "Тест успешно завершён и Вы ответили верно на " +
+                                countTrueAnswers +
+                                " вопросов[а]!");
             }
 
             try {
